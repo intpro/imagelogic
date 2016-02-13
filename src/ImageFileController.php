@@ -26,7 +26,7 @@ class ImageFileController extends Controller
 
         } else {
 
-            return ['status'=>'Не хватает параметров (файла или имени сущности) для сохранения.'];
+            return ['status'=>'Не хватает параметров (файла или имени сущности) для сохранения!'];
 
         }
 
