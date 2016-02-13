@@ -40,3 +40,4 @@ class ImageFileLogicServiceProvider extends ServiceProvider {
     }
 
 }
+
