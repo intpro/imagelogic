@@ -1,6 +1,6 @@
 <?php
 
-namespace Prehistorical\ImageFileLogic;
+namespace Interpro\ImageFileLogic;
 
 use App\Http\Controllers\Controller;
 
@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Request;
 class ImageFileController extends Controller
 {
 
-    public function postImage(\Prehistorical\ImageFileLogic\ImageFileLogic $ifl) {
+    public function postImage(\Interpro\ImageFileLogic\ImageFileLogic $ifl) {
 
         if(Request::hasFile('imagefile') && Request::has('name'))
         {

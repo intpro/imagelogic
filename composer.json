@@ -1,10 +1,10 @@
 {
-    "name": "prehistorical/imagefilelogic",
+    "name": "interpro/imagefilelogic",
     "description": "Логика закачки и хранения картинок, конфигурируемая",
     "keywords": [
         "landing"
     ],
-    "homepage": "https://github.com/prehistorical/imagefilelogic",
+    "homepage": "https://github.com/intpro/imagelogic",
     "license": "MIT",
     "authors": [
         {
@@ -24,7 +24,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Prehistorical\\ImageFileLogic\\": "src/"
+            "Interpro\\ImageFileLogic\\": "src/"
         }
     },
     "minimum-stability": "dev"

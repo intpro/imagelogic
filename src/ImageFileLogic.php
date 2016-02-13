@@ -1,6 +1,6 @@
 <?php
 
-namespace Prehistorical\ImageFileLogic;
+namespace Interpro\ImageFileLogic;
 
 use URL;
 use Intervention\Image\Facades\Image;

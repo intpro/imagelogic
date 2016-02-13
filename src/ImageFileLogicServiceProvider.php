@@ -1,6 +1,6 @@
 <?php
 
-namespace Prehistorical\ImageFileLogic;
+namespace Interpro\ImageFileLogic;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -24,11 +24,11 @@ class ImageFileLogicServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-        $this->app->make('Prehistorical\ImageFileLogic\ImageFileController');
+        $this->app->make('Interpro\ImageFileLogic\ImageFileController');
 
-        $this->app->singleton('Prehistorical\ImageFileLogic\ImageFileLogic', function($app)
+        $this->app->singleton('Interpro\ImageFileLogic\ImageFileLogic', function($app)
         {
-            return new \Prehistorical\ImageFileLogic\ImageFileLogic();
+            return new \Interpro\ImageFileLogic\ImageFileLogic();
         });
 
         include __DIR__.'/routes.php';
@@ -36,7 +36,7 @@ class ImageFileLogicServiceProvider extends ServiceProvider {
 
     public function provides()
     {
-        return ['Prehistorical\ImageFileLogic\ImageFileLogic'];
+        return ['Interpro\ImageFileLogic\ImageFileLogic'];
     }
 
 }
