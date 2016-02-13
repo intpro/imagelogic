@@ -1,0 +1,31 @@
+{
+    "name": "prehistorical/imagefilelogic",
+    "description": "Логика закачки и хранения картинок, конфигурируемая",
+    "keywords": [
+        "landing"
+    ],
+    "homepage": "https://github.com/prehistorical/imagefilelogic",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Boris Dorofeev",
+            "email": "boris.dorofeev2014@yandex.ru",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "intervention/image": "^2.2"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Prehistorical\\ImageFileLogic\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
