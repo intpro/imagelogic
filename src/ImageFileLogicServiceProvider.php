@@ -15,6 +15,7 @@ class ImageFileLogicServiceProvider extends ServiceProvider {
     {
         //Publishes package config file to applications config folder
         $this->publishes([__DIR__.'/config/resize.php' => config_path('resize.php')]);
+        $this->publishes([__DIR__.'/config/imagefilelogic.php' => config_path('imagefilelogic.php')]);
     }
 
     /**
@@ -24,19 +25,31 @@ class ImageFileLogicServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-        $this->app->make('Interpro\ImageFileLogic\ImageFileController');
+        $this->app->singleton(
+            'Interpro\ImageFileLogic\Concept\Report',
+            'Interpro\ImageFileLogic\Laravel\Report'
+        );
 
-        $this->app->singleton('Interpro\ImageFileLogic\ImageFileLogic', function($app)
-        {
-            return new \Interpro\ImageFileLogic\ImageFileLogic();
-        });
+        $this->app->singleton(
+            'Interpro\ImageFileLogic\Concept\ImageConfig',
+            'Interpro\ImageFileLogic\Laravel\ImageConfig'
+        );
 
-        include __DIR__.'/routes.php';
+        $this->app->singleton(
+            'Interpro\ImageFileLogic\Concept\ActionChainFactory',
+            'Interpro\ImageFileLogic\Laravel\ActionChainFactory'
+        );
+
+        $this->app->singleton(
+            'Interpro\ImageFileLogic\Concept\PathResolver',
+            'Interpro\ImageFileLogic\Laravel\PathResolver'
+        );
+
     }
 
     public function provides()
     {
-        return ['Interpro\ImageFileLogic\ImageFileLogic'];
+        //return ['Interpro\ImageFileLogic\ImageFileLogic'];
     }
 
 }

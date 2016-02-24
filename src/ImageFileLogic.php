@@ -78,6 +78,7 @@ class ImageFileLogic {
         $baseurl = URL::to('/');
 
         $prefix = $entity.'_'.$id;
+        $prefix = $entity.'_'.$id;
 
         $mkfile_mode = static::getMkFileMode();
 

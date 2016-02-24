@@ -2,7 +2,7 @@
     "name": "interpro/imagefilelogic",
     "description": "Логика закачки и хранения картинок, конфигурируемая",
     "keywords": [
-        "landing"
+        "qstorage"
     ],
     "homepage": "https://github.com/intpro/imagelogic",
     "license": "MIT",
