@@ -38,15 +38,15 @@ class CreateImageAction extends ImageAction
 
         $new_image_name    = $imageItem->getName();
 
-        $uploadflag = $this->req_file->move(
+        $this->req_file->move(
             $images_dir,
             $new_image_name
         );
 
-        if(!$uploadflag)
-        {
-            throw new ImageFileSystemException('Не удалось переписать временный файл '.$temp_name.' по новому пути '.$new_image_name);
-        }
+//        if(!$uploadflag)
+//        {
+//            throw new ImageFileSystemException('Не удалось переписать временный файл '.$temp_name.' по новому пути '.$new_image_name);
+//        }
 
         $image_path = $images_dir.'/'.$new_image_name;
 
