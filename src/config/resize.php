@@ -10,6 +10,4 @@ return [
         'sizes' => [['width'=>600, 'height'=>null, 'sufix'=>'primary', 'mod'=>false], ['width'=>240, 'height'=>null, 'sufix'=>'secondary'], ['width'=>60, 'height'=>null, 'sufix'=>'preview']]
     ]
 
-
-
 ];

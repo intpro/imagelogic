@@ -15,6 +15,7 @@ class ResizeImageAction extends ImageAction
     private $height;
     private $sufix;
     private $mod;
+    private $absolve;
     private $pathResolver;
     private $report;
 
@@ -33,7 +34,8 @@ class ResizeImageAction extends ImageAction
         $width,
         $height,
         $sufix,
-        $mod
+        $mod,
+        $absolve = false
     )
     {
         $this->width        = $width;
@@ -75,8 +77,13 @@ class ResizeImageAction extends ImageAction
 
         $resized_path = $images_dir.'/'.$resized_name;
 
-        $img = Image::make($source_img)->resize($this->width, $this->height, function ($constraint) {
-            $constraint->aspectRatio();
+        $absolve = $this->absolve;
+
+        $img = Image::make($source_img)->resize($this->width, $this->height,
+            function ($constraint) use ($absolve) {
+            if(!$absolve){
+                $constraint->aspectRatio();
+            }
         });
 
         $img->save($resized_path, 100);

@@ -71,8 +71,10 @@ class ActionChainFactory implements ActionChainFactoryInterface
                 {
                     foreach($config['sizes'] as $npp => $size_config)
                     {
-                        $mod = array_key_exists('mod', $size_config) ? $size_config['mod'] : false;
-                        $resizeAction = new ResizeImageAction($size_config['width'], $size_config['height'], $size_config['sufix'], $mod);
+                        $mod     = array_key_exists('mod', $size_config) ? $size_config['mod'] : false;
+                        $absolve = array_key_exists('absolve', $size_config) ? $size_config['absolve'] : false;
+
+                        $resizeAction = new ResizeImageAction($size_config['width'], $size_config['height'], $size_config['sufix'], $mod, $absolve);
                         $parentAction->succeedWith($resizeAction);
                         $parentAction = $resizeAction;
                     }
