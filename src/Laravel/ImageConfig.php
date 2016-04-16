@@ -8,6 +8,15 @@ use Interpro\ImageFileLogic\Concept\Exception\ImageConfigException;
 
 class ImageConfig implements ImageConfigInterface
 {
+
+    private $config;
+
+
+    public function __construct()
+    {
+        $this->config = $this->getConfigAll();
+    }
+
     private function imageExcInform($message, $throw_exc)
     {
         if($throw_exc)
@@ -256,11 +265,9 @@ class ImageConfig implements ImageConfigInterface
      */
     public function getConfig($config_name)
     {
-        $config = $this->getConfigAll();
-
-        if(array_key_exists($config_name, $config))
+        if(array_key_exists($config_name, $this->config))
         {
-            $image_config = $config[$config_name];
+            $image_config = $this->config[$config_name];
 
             $this->checkConfig($image_config, $config_name);
 
@@ -279,9 +286,108 @@ class ImageConfig implements ImageConfigInterface
      */
     public function configExist($config_name)
     {
-        $config = $this->getConfigAll();
+        return array_key_exists($config_name, $this->config);
+    }
 
-        return array_key_exists($config_name, $config);
+    /**
+     * @param string $config_name
+     *
+     * @param string $sufix
+     */
+    public function getWidth($image_name, $sufix)
+    {
+        $conf = $this->getConfig($image_name);
+
+        if(array_key_exists('sizes', $conf))
+        {
+            foreach($conf['sizes'] as $size)
+            {
+                if($size['sufix'] == $sufix)
+                {
+                    if($size['width'])
+                    {
+
+                        return $size['width'];
+                    }elseif($size['height']){
+
+                        return $size['height'];
+                    }else{
+
+                        return 200;
+                    }
+                }
+
+            }
+
+        }
+
+        return 200;
+    }
+
+    /**
+     * @param string $config_name
+     *
+     * @param string $sufix
+     */
+    public function getHeight($image_name, $sufix)
+    {
+        $conf = $this->getConfig($image_name);
+
+        if(array_key_exists('sizes', $conf))
+        {
+            foreach($conf['sizes'] as $size)
+            {
+                if($size['sufix'] == $sufix)
+                {
+                    if($size['height'])
+                    {
+
+                        return $size['height'];
+                    }elseif($size['width']){
+
+                        return $size['width'];
+                    }else{
+
+                        return 200;
+                    }
+                }
+
+            }
+
+        }
+
+        return 200;
+    }
+
+    /**
+     * @param string $config_name
+     *
+     * @param string $sufix
+     */
+    public function getColor($image_name, $sufix)
+    {
+        $conf = $this->getConfig($image_name);
+
+        if(array_key_exists('sizes', $conf))
+        {
+            foreach($conf['sizes'] as $size)
+            {
+                if($size['sufix'] == $sufix)
+                {
+                    if($size['color'])
+                    {
+
+                        return $size['color'];
+                    }else{
+
+                        return '#808080';
+                    }
+                }
+
+            }
+
+        }
+        return '#808080';
     }
 
 }

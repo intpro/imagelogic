@@ -27,4 +27,25 @@ interface ImageConfig{
     */
     public function configExist($config_name);
 
+    /**
+     * @param string $config_name
+     *
+     * @param string $sufix
+     */
+    public function getWidth($image_name, $sufix);
+
+    /**
+     * @param string $config_name
+     *
+     * @param string $sufix
+     */
+    public function getHeight($image_name, $sufix);
+
+    /**
+     * @param string $config_name
+     *
+     * @param string $sufix
+     */
+    public function getColor($image_name, $sufix);
+
 }
