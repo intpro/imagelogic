@@ -374,13 +374,16 @@ class ImageConfig implements ImageConfigInterface
             {
                 if($size['sufix'] == $sufix)
                 {
-                    if($size['color'])
+                    if(array_key_exists('color', $size))
                     {
+                        if($size['color'])
+                        {
 
-                        return $size['color'];
-                    }else{
+                            return $size['color'];
+                        }else{
 
-                        return '#808080';
+                            return '#808080';
+                        }
                     }
                 }
 
