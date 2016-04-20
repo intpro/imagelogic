@@ -15,6 +15,7 @@ class ImageFileLogicServiceProvider extends ServiceProvider {
     {
         //Publishes package config file to applications config folder
         $this->publishes([__DIR__.'/config/resize.php' => config_path('resize.php')]);
+        $this->publishes([__DIR__.'/config/crop.php' => config_path('crop.php')]);
         $this->publishes([__DIR__.'/config/imagefilelogic.php' => config_path('imagefilelogic.php')]);
     }
 
@@ -43,6 +44,11 @@ class ImageFileLogicServiceProvider extends ServiceProvider {
         $this->app->singleton(
             'Interpro\ImageFileLogic\Concept\PathResolver',
             'Interpro\ImageFileLogic\Laravel\PathResolver'
+        );
+
+        $this->app->singleton(
+            'Interpro\ImageFileLogic\Concept\ImageLogicAgent',
+            'Interpro\ImageFileLogic\Laravel\ImageLogicAgent'
         );
 
     }
