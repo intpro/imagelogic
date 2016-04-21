@@ -88,6 +88,14 @@ class ImageConfig implements ImageConfigInterface
                                     {
                                         $this->imageExcInform('Признак (absolve) не задан булевым типом ('.$config_name.'): resize №'.$resize_numb, $throw_exc);
                                     }
+                                }elseif($key_2 == 'color')
+                                {
+                                    if(is_string($val_2))
+                                    {
+                                        $t_is_sufix = true;
+                                    }else{
+                                        $this->imageExcInform('Цвет (color) должен быть строкой ('.$config_name.'): resize №'.$resize_numb, $throw_exc);
+                                    }
                                 }else{
                                     $this->imageExcInform('Неизвестный идентификатор в настройке ресайза изображений ('.$config_name.'): resize №'.$resize_numb, $throw_exc);
                                 }
