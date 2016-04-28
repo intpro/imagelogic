@@ -29,7 +29,12 @@ class Report implements ReportInterface
      */
     public function getImageReport($image_name)
     {
-        return $this->images[$image_name]['sizes'];
+        if(array_key_exists($image_name, $this->images))
+        {
+            return $this->images[$image_name]['sizes'];
+        }else{
+            return [];
+        }
     }
 
     /**
