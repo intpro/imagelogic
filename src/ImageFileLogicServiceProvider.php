@@ -37,6 +37,16 @@ class ImageFileLogicServiceProvider extends ServiceProvider {
         );
 
         $this->app->singleton(
+            'Interpro\ImageFileLogic\Concept\CropConfig',
+            'Interpro\ImageFileLogic\Laravel\CropConfig'
+        );
+
+        $this->app->singleton(
+            'Interpro\ImageFileLogic\Concept\Croper',
+            'Interpro\ImageFileLogic\Laravel\Croper'
+        );
+
+        $this->app->singleton(
             'Interpro\ImageFileLogic\Concept\ActionChainFactory',
             'Interpro\ImageFileLogic\Laravel\ActionChainFactory'
         );

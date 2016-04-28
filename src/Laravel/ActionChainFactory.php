@@ -4,10 +4,12 @@ namespace Interpro\ImageFileLogic\Laravel;
 
 use Interpro\ImageFileLogic\Concept\Action\ImageAction;
 use Interpro\ImageFileLogic\Concept\ActionChainFactory as ActionChainFactoryInterface;
+use Interpro\ImageFileLogic\Concept\CropConfig;
 use Interpro\ImageFileLogic\Concept\Exception\ImageConfigException;
 use Interpro\ImageFileLogic\Concept\Exception\ImageFileSystemException;
 use Interpro\ImageFileLogic\Concept\ImageConfig;
 use Interpro\ImageFileLogic\Laravel\Action\CleanImageAction;
+use Interpro\ImageFileLogic\Laravel\Action\DeleteImageAction;
 use Interpro\ImageFileLogic\Laravel\Action\MaskImageAction;
 use Interpro\ImageFileLogic\Laravel\Action\ResizeImageAction;
 use Interpro\ImageFileLogic\Laravel\Action\WaterImageAction;
@@ -24,24 +26,31 @@ class ActionChainFactory implements ActionChainFactoryInterface
     /**
      * @param string $name
      *
-     * @return void
+     * @return ImageAction
      */
     public function buildChain(ImageAction $headAction, $name, $config_name)
     {
+        $parentAction = $headAction;
+
         try{
 
             $config = $this->imageConfig->getConfig($config_name);
 
-            $parentAction = $headAction;
+            if($name == 'clear')
+            {
+                $deleteAction = new DeleteImageAction();
+                $parentAction->succeedWith($deleteAction);
+                $parentAction = $deleteAction;
+            }
 
-            if('update' or 'refresh')
+            if($name == 'update' or $name == 'refresh')
             {
                 $cleanAction = new CleanImageAction();
                 $parentAction->succeedWith($cleanAction);
                 $parentAction = $cleanAction;
             }
 
-            if('update' or 'refresh')
+            if($name == 'update' or 'refresh')
             {
                 if(array_key_exists('mask', $config))
                 {
@@ -86,7 +95,7 @@ class ActionChainFactory implements ActionChainFactoryInterface
             throw new ImageFileSystemException('Ошибка в конфигурации картинок: '.$imconfexc->getMessage());
         }
 
-
+        return $parentAction;
     }
 
 }

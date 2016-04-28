@@ -10,7 +10,6 @@ use Interpro\ImageFileLogic\Concept\Item\ImageItem;
 
 class DeleteImageAction extends ImageAction
 {
-
     private $pathResolver;
 
     /**
@@ -30,7 +29,7 @@ class DeleteImageAction extends ImageAction
 
         foreach (glob($images_dir.'/'.$prefix.'*.*') as $file) {
 
-            if(is_dir($images_dir.'/'.$file) || $file=='.' || $file=='..') continue;
+            if(is_dir($file) || $file=='.' || $file=='..') continue;
 
             unlink($file);
 

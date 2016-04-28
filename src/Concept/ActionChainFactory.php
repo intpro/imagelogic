@@ -9,7 +9,7 @@ interface ActionChainFactory{
      /**
      * @param string $name
      *
-     * @return void
+     * @return ImageAction
      */
     public function buildChain(ImageAction $imageAction, $name, $config_name);
 

@@ -22,4 +22,12 @@ class PathResolver implements PathResolverInterface
         return public_path() . '/' . config('imagefilelogic.image_dir');
     }
 
+    /**
+     * @return string
+     */
+    public function getImageCropDir()
+    {
+        return public_path() . '/' . config('imagefilelogic.crop_dir');
+    }
+
 }

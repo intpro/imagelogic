@@ -14,4 +14,9 @@ interface PathResolver{
      */
     public function getImageDir();
 
+    /**
+     * @return string
+     */
+    public function getImageCropDir();
+
 }
