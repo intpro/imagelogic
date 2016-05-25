@@ -90,7 +90,7 @@ class ResizeImageAction extends ImageAction
 
         chmod($resized_path, 0777);
 
-        Log::info('Добавлена маска к картинке: ' . $image_path);
+        Log::info('Выполнен ресайз картинки: ' . $image_path);
 
         $this->report->setImageResize($imageItem->getNameWoExt(), $this->sufix, $resized_name);
 
