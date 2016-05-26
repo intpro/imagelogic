@@ -2,9 +2,9 @@
 
 namespace Interpro\ImageFileLogic\Laravel;
 
-use Interpro\ImageFileLogic\Concept\ImageConfig;
+use Interpro\ImageFileLogic\Concept\ImageConfig as ImageConfigInterface;
 use Interpro\ImageFileLogic\Concept\ImageLogicAgent as ImageLogicAgentInterface;
-use Interpro\Placeholder\Concept\PlaceholderAgent;
+use Interpro\Placeholder\Concept\PlaceholderAgent as PlaceholderAgentInterface;
 
 class ImageLogicAgent implements ImageLogicAgentInterface
 {
@@ -12,7 +12,7 @@ class ImageLogicAgent implements ImageLogicAgentInterface
     private $imageConfig;
     private $placeholderAgent;
 
-    public function __construct(ImageConfig $imageConfig, PlaceholderAgent $placeholderAgent)
+    public function __construct(ImageConfigInterface $imageConfig, PlaceholderAgentInterface $placeholderAgent)
     {
         $this->imageConfig = $imageConfig;
         $this->placeholderAgent = $placeholderAgent;

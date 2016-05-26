@@ -2,12 +2,12 @@
 
 namespace Interpro\ImageFileLogic\Laravel;
 
-use Interpro\ImageFileLogic\Concept\Action\ImageAction;
+use Interpro\ImageFileLogic\Concept\Action\ImageAction as ImageActionInterface;
 use Interpro\ImageFileLogic\Concept\ActionChainFactory as ActionChainFactoryInterface;
 use Interpro\ImageFileLogic\Concept\CropConfig;
 use Interpro\ImageFileLogic\Concept\Exception\ImageConfigException;
 use Interpro\ImageFileLogic\Concept\Exception\ImageFileSystemException;
-use Interpro\ImageFileLogic\Concept\ImageConfig;
+use Interpro\ImageFileLogic\Concept\ImageConfig as ImageConfigInterface;
 use Interpro\ImageFileLogic\Laravel\Action\CleanImageAction;
 use Interpro\ImageFileLogic\Laravel\Action\DeleteImageAction;
 use Interpro\ImageFileLogic\Laravel\Action\MaskImageAction;
@@ -18,7 +18,7 @@ class ActionChainFactory implements ActionChainFactoryInterface
 {
     private $imageConfig;
 
-    public function __construct(ImageConfig $imageConfig)
+    public function __construct(ImageConfigInterface $imageConfig)
     {
         $this->imageConfig = $imageConfig;
     }
@@ -26,9 +26,9 @@ class ActionChainFactory implements ActionChainFactoryInterface
     /**
      * @param string $name
      *
-     * @return ImageAction
+     * @return ImageActionInterface
      */
-    public function buildChain(ImageAction $headAction, $name, $config_name)
+    public function buildChain(ImageActionInterface $headAction, $name, $config_name)
     {
         $parentAction = $headAction;
 

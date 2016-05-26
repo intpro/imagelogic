@@ -5,14 +5,14 @@ namespace Interpro\ImageFileLogic\Laravel;
 use Illuminate\Support\Facades\Log;
 use Interpro\ImageFileLogic\Concept\Croper as CroperInterface;
 use Interpro\ImageFileLogic\Concept\Exception\ImageFileSystemException;
-use Interpro\ImageFileLogic\Concept\PathResolver;
+use Interpro\ImageFileLogic\Concept\PathResolver as PathResolverInterface;
 use Intervention\Image\Facades\Image;
 
 class Croper implements CroperInterface{
 
     private $pathResolver;
 
-    public function __construct(PathResolver $pathResolver)
+    public function __construct(PathResolverInterface $pathResolver)
     {
         $this->pathResolver = $pathResolver;
     }
