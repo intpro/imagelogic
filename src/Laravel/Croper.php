@@ -55,16 +55,33 @@ class Croper implements CroperInterface
 
         $img = Image::make($target_path);
 
+        //Нехороший подсчет кропа, делаем инкастыляцию (наводимся по центру заново):
+
         $width = $target_x2-$target_x1;
         $height = $target_y2-$target_y1;
+
+        $target_width = $img->getWidth();
+        $target_height = $img->getHeight();
+
+        if($target_width < $width)
+        {
+            $target_x1 = 0;
+        }
+
+        if($target_height < $height)
+        {
+            $target_y1 = 0;
+        }
 
         $canvas_width = $width;
         $canvas_height = $height;
 
-        $width = min($img->getWidth(), $width);
-        $height = min($img->getHeight(), $height);
+        $real_crop_width = min($img->getWidth(), $width);
+        $real_crop_height = min($img->getHeight(), $height);
 
-        $img->crop($width, $height, $target_x1, $target_y1);
+        $img->crop($real_crop_width, $real_crop_height, $target_x1, $target_y1);
+
+        //$img->save($result_path, 100);
 
         Image::canvas($canvas_width, $canvas_height, $bg_color)->insert($img, 'center')->save($result_path, 100);
 
