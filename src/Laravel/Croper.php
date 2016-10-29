@@ -8,7 +8,8 @@ use Interpro\ImageFileLogic\Concept\Exception\ImageFileSystemException;
 use Interpro\ImageFileLogic\Concept\PathResolver as PathResolverInterface;
 use Intervention\Image\Facades\Image;
 
-class Croper implements CroperInterface{
+class Croper implements CroperInterface
+{
 
     private $pathResolver;
 
@@ -24,10 +25,11 @@ class Croper implements CroperInterface{
      * @param string $target_y1
      * @param string $target_x2
      * @param string $target_y2
+     * @param string $bg_color
      *
      * @return void
      */
-    public function crop($target_name, $result_name, $target_x1, $target_y1, $target_x2, $target_y2)
+    public function crop($target_name, $result_name, $target_x1, $target_y1, $target_x2, $target_y2, $bg_color = '#ffffff')
     {
         $image_dir = $this->pathResolver->getImageDir();
         $crop_dir = $this->pathResolver->getImageCropDir();
@@ -56,9 +58,15 @@ class Croper implements CroperInterface{
         $width = $target_x2-$target_x1;
         $height = $target_y2-$target_y1;
 
+        $canvas_width = $width;
+        $canvas_height = $height;
+
+        $width = min($img->getWidth(), $width);
+        $height = min($img->getHeight(), $height);
+
         $img->crop($width, $height, $target_x1, $target_y1);
 
-        $img->save($result_path, 100);
+        Image::canvas($canvas_width, $canvas_height, $bg_color)->insert($img, 'center')->save($result_path, 100);
 
         chmod($result_path, 0777);
 

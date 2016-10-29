@@ -34,9 +34,11 @@ class CropConfig implements CropConfigInterface
             $t_is_man = false;
             $t_is_target = false;
 
+            $t_is_color = true;
+
             foreach($val_1 as $key_2 => $val_2)
             {
-                if($key_2 =='width')
+                if($key_2 === 'width')
                 {
                     if(is_int($val_2) or is_null($val_2))
                     {
@@ -45,7 +47,7 @@ class CropConfig implements CropConfigInterface
                         $this->cropExcInform('Ширина (width) не задана целым числом ('.$config_name.'): crop '.$crop_name);
                     }
                 }
-                elseif($key_2 == 'height' or is_null($val_2))
+                elseif($key_2 === 'height' or is_null($val_2))
                 {
                     if(is_int($val_2) or is_null($val_2))
                     {
@@ -54,7 +56,7 @@ class CropConfig implements CropConfigInterface
                         $this->cropExcInform('Высота (height) не задана целым числом ('.$config_name.'): crop '.$crop_name);
                     }
                 }
-                elseif($key_2 == 'man' or is_null($val_2))
+                elseif($key_2 === 'man' or is_null($val_2))
                 {
                     if(is_string($val_2))
                     {
@@ -63,13 +65,20 @@ class CropConfig implements CropConfigInterface
                         $this->cropExcInform('Образец для кропа (man) должен быть строкой ('.$config_name.'): crop '.$crop_name);
                     }
                 }
-                elseif($key_2 == 'target' or is_null($val_2))
+                elseif($key_2 === 'target' or is_null($val_2))
                 {
                     if(is_string($val_2))
                     {
                         $t_is_target = true;
                     }else{
                         $this->cropExcInform('Цель для кропа (target) должна быть строкой ('.$config_name.'): crop '.$crop_name);
+                    }
+                }
+                elseif($key_2 === 'color')
+                {
+                    if(!$this->validateColor($val_2))
+                    {
+                        $t_is_color = false;
                     }
                 }
             }
@@ -94,9 +103,30 @@ class CropConfig implements CropConfigInterface
                 $this->cropExcInform('Цель для кропа (target) должна быть указана ('.$config_name.'): crop '.$crop_name);
             }
 
+            if(!$t_is_color)
+            {
+                $this->cropExcInform('Формат строки цвета неправильный (hex) ('.$config_name.'): crop '.$crop_name);
+            }
+
         }
     }
 
+    /**
+     * @param string $color
+     * @return bool
+     */
+    private function validateColor($color)
+    {
+        preg_match('/(#[a-f0-9]{3}([a-f0-9]{3})?)/i', $color, $matches);
+        if (isset($matches[1]))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     public function getConfigAll()
     {
@@ -178,6 +208,28 @@ class CropConfig implements CropConfigInterface
     public function getTarget($image_name, $crop_name)
     {
         return $this->getField($image_name, $crop_name, 'target', 'цель для кропа');
+    }
+
+    /**
+     * @param string $image_name
+     *
+     * @param string $crop_name
+     *
+     * @return string
+     */
+    public function getColor($image_name, $crop_name)
+    {
+        $conf = $this->getConfig($image_name);
+
+        if(array_key_exists($crop_name, $conf))
+        {
+            if(array_key_exists('color', $conf[$crop_name]))
+            {
+                return $conf[$crop_name]['color'];
+            }
+        }
+
+        return '#ffffff';
     }
 
     /**

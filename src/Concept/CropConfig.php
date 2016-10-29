@@ -37,6 +37,8 @@ interface CropConfig{
      * @param string $image_name
      *
      * @param string $crop_name
+     *
+     * @return string
      */
     public function getWidth($image_name, $crop_name);
 
@@ -44,6 +46,8 @@ interface CropConfig{
      * @param string $image_name
      *
      * @param string $crop_name
+     *
+     * @return string
      */
     public function getHeight($image_name, $crop_name);
 
@@ -51,6 +55,8 @@ interface CropConfig{
      * @param string $image_name
      *
      * @param string $crop_name
+     *
+     * @return string
      */
     public function getMan($image_name, $crop_name);
 
@@ -58,7 +64,18 @@ interface CropConfig{
      * @param string $image_name
      *
      * @param string $crop_name
+     *
+     * @return string
      */
     public function getTarget($image_name, $crop_name);
+
+    /**
+     * @param string $image_name
+     *
+     * @param string $crop_name
+     *
+     * @return string
+     */
+    public function getColor($image_name, $crop_name);
 
 }
