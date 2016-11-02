@@ -27,6 +27,23 @@ class ImageConfig implements ImageConfigInterface
         }
     }
 
+    /**
+     * @param string $color
+     * @return bool
+     */
+    private function validateColor($color)
+    {
+        preg_match('/(#[a-f0-9]{3}([a-f0-9]{3})?)/i', $color, $matches);
+        if (isset($matches[1]))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public function checkConfig(&$image_config, $config_name, $throw_exc = true)
     {
 
@@ -34,7 +51,31 @@ class ImageConfig implements ImageConfigInterface
         {
             $res_canv = ['top-left', 'top', 'top-right', 'left', 'center', 'right', 'bottom-left', 'bottom', 'bottom-right'];
 
-            if($key_1 == 'sizes')
+            if($key_1 == 'proportions')
+            {
+                if(is_array($val_1))
+                {
+                    foreach($val_1 as $pp_key => $pp_value)
+                    {
+                        if($pp_key === 'width' or $pp_key === 'height')
+                        {
+                            if(!is_int($pp_value))
+                            {
+                                $this->imageExcInform('Размеры пропорций (width, height) не заданы целым числовым типом ('.$config_name.'): '.$pp_key, $throw_exc);
+                            }
+                        }elseif($pp_key === 'color'){
+
+                            if(!(is_string($pp_value) and $this->validateColor($pp_value)))
+                            {
+                                $this->imageExcInform('Формат строки цвета неправильный (hex) ('.$config_name.'): crop '.$pp_value, $throw_exc);
+                            }
+                        }
+                    }
+                }else{
+                    $this->imageExcInform('Раздел proportions должен быть массивом('.$config_name.'): '.$key_1, $throw_exc);
+                }
+            }
+            elseif($key_1 == 'sizes')
             {
                 if(is_array($val_1))
                 {
@@ -295,6 +336,66 @@ class ImageConfig implements ImageConfigInterface
     public function configExist($config_name)
     {
         return array_key_exists($config_name, $this->config);
+    }
+
+    /**
+     * @param string $config_name
+     *
+     * @return array
+     */
+    public function getProportions($image_name)
+    {
+        $conf = $this->getConfig($image_name);
+
+        $pp = ['transform' => true];
+
+        if(array_key_exists('proportions', $conf))
+        {
+            $pp_conf = $conf['proportions'];
+
+            $width_exist = array_key_exists('width', $pp_conf);
+            $height_exist = array_key_exists('height', $pp_conf);
+
+            if($width_exist and $height_exist)
+            {
+                $pp['width'] = $pp_conf['width'];
+                $pp['height'] = $pp_conf['height'];
+            }
+            elseif($width_exist and !$height_exist)
+            {
+                $pp['width'] = $pp_conf['width'];
+                $pp['height'] = $pp_conf['width'];
+            }
+            elseif(!$width_exist and $height_exist)
+            {
+                $pp['width'] = $pp_conf['height'];
+                $pp['height'] = $pp_conf['height'];
+            }
+            elseif(!$width_exist and !$height_exist)
+            {
+                $pp['width'] = 1;
+                $pp['height'] = 1;
+                $pp['transform'] = false;
+            }
+
+            if(array_key_exists('color', $pp_conf))
+            {
+                $pp['color'] = $pp_conf['color'];
+            }
+            else
+            {
+                $pp['color'] = '#ffffff';
+            }
+        }
+        else
+        {
+            $pp['width'] = 1;
+            $pp['height'] = 1;
+            $pp['color'] = '#ffffff';
+            $pp['transform'] = false;
+        }
+
+        return $pp;
     }
 
     /**

@@ -48,4 +48,11 @@ interface ImageConfig{
      */
     public function getColor($image_name, $sufix);
 
+    /**
+     * @param string $image_name
+     *
+     * @return array
+     */
+    public function getProportions($image_name);
+
 }
