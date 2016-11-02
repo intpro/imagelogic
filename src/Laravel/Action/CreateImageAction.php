@@ -5,7 +5,7 @@ namespace Interpro\ImageFileLogic\Laravel\Action;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Interpro\ImageFileLogic\Concept\Action\ImageAction;
-use Interpro\ImageFileLogic\Concept\Exception\ImageFileSystemException;
+use Intervention\Image\Facades\Image;
 use Interpro\ImageFileLogic\Concept\Item\ImageItem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
