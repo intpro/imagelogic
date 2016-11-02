@@ -29,6 +29,13 @@ class CreateImageAction extends ImageAction
         $this->imageConfig  = App::make('Interpro\ImageFileLogic\Concept\ImageConfig');
     }
 
+    private function WOId($image_name)
+    {
+        $pos = strrpos($image_name, '_');
+
+        return substr($image_name, 0, $pos);
+    }
+
     public function applyFor(ImageItem $imageItem)
     {
         $images_dir = $this->pathResolver->getImageDir();
