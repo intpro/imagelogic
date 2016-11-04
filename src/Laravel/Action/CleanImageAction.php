@@ -43,6 +43,15 @@ class CleanImageAction extends ImageAction
             Log::info('Удаление картинки: ' . $file);
         }
 
+        foreach (glob($images_dir.'/crops/'.$prefix.'*.*') as $file) {
+
+            if(is_dir($file) || $file=='.' || $file=='..') continue;
+
+            unlink($file);
+
+            Log::info('Удаление картинки: ' . $file);
+        }
+
         $this->next($imageItem);
 
 
