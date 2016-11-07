@@ -47,7 +47,8 @@ class Croper implements CroperInterface
 
         if(!$target_exist)
         {
-            throw new ImageFileSystemException('Нет файла по пути (с любым расширением) :'.$target_path);
+            Log::info('Нет файла по пути (с любым расширением) :'.$target_path);
+            return;
         }
 
         $target_path = $target_path.'.'.$path_ext;
