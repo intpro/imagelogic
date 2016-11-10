@@ -13,6 +13,7 @@ use Interpro\ImageFileLogic\Laravel\Action\CropImageAction;
 use Interpro\ImageFileLogic\Laravel\Action\DeleteImageAction;
 use Interpro\ImageFileLogic\Laravel\Action\MaskImageAction;
 use Interpro\ImageFileLogic\Laravel\Action\ResizeImageAction;
+use Interpro\ImageFileLogic\Laravel\Action\TotalWaterImageAction;
 use Interpro\ImageFileLogic\Laravel\Action\WaterImageAction;
 
 class ActionChainFactory implements ActionChainFactoryInterface
@@ -82,6 +83,10 @@ class ActionChainFactory implements ActionChainFactoryInterface
                     $parentAction->succeedWith($cropAction);
                     $parentAction = $cropAction;
                 }
+
+                $wmAction = new TotalWaterImageAction();
+                $parentAction->succeedWith($wmAction);
+                $parentAction = $wmAction;
 
             }
 
