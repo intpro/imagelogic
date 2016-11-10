@@ -9,6 +9,7 @@ use Interpro\ImageFileLogic\Concept\Exception\ImageConfigException;
 use Interpro\ImageFileLogic\Concept\Exception\ImageFileSystemException;
 use Interpro\ImageFileLogic\Concept\ImageConfig as ImageConfigInterface;
 use Interpro\ImageFileLogic\Laravel\Action\CleanImageAction;
+use Interpro\ImageFileLogic\Laravel\Action\CropImageAction;
 use Interpro\ImageFileLogic\Laravel\Action\DeleteImageAction;
 use Interpro\ImageFileLogic\Laravel\Action\MaskImageAction;
 use Interpro\ImageFileLogic\Laravel\Action\ResizeImageAction;
@@ -17,10 +18,12 @@ use Interpro\ImageFileLogic\Laravel\Action\WaterImageAction;
 class ActionChainFactory implements ActionChainFactoryInterface
 {
     private $imageConfig;
+    private $cropConfig;
 
-    public function __construct(ImageConfigInterface $imageConfig)
+    public function __construct(ImageConfigInterface $imageConfig, CropConfig $cropConfig)
     {
         $this->imageConfig = $imageConfig;
+        $this->cropConfig = $cropConfig;
     }
 
     /**
@@ -35,6 +38,7 @@ class ActionChainFactory implements ActionChainFactoryInterface
         try{
 
             $config = $this->imageConfig->getConfig($config_name);
+            $all_crops_config = $this->cropConfig->getConfig($config_name);
 
             if($name == 'clear')
             {
@@ -52,30 +56,6 @@ class ActionChainFactory implements ActionChainFactoryInterface
 
             if($name == 'update' or 'refresh')
             {
-                if(array_key_exists('mask', $config))
-                {
-                    $mask_config = & $config['mask'];
-
-                    $_x = array_key_exists('x', $mask_config) ? $mask_config['x'] : null;
-                    $_y = array_key_exists('y', $mask_config) ? $mask_config['y'] : null;
-
-                    $maskAction = new MaskImageAction($mask_config['file'], $mask_config['position'], $_x, $_y);
-                    $parentAction->succeedWith($maskAction);
-                    $parentAction = $maskAction;
-                }
-
-                if(array_key_exists('water', $config))
-                {
-                    $water_config = & $config['water'];
-
-                    $_x = array_key_exists('x', $water_config) ? $water_config['x'] : null;
-                    $_y = array_key_exists('y', $water_config) ? $water_config['y'] : null;
-
-                    $waterAction = new WaterImageAction($water_config['file'], $water_config['position'], $_x, $_y);
-                    $parentAction->succeedWith($waterAction);
-                    $parentAction = $waterAction;
-                }
-
                 if(array_key_exists('sizes', $config))
                 {
                     foreach($config['sizes'] as $npp => $size_config)
@@ -88,6 +68,21 @@ class ActionChainFactory implements ActionChainFactoryInterface
                         $parentAction = $resizeAction;
                     }
                 }
+
+                foreach($all_crops_config as $crop_name => $crop_config)
+                {
+                    $color = '#ffffff';
+
+                    if(array_key_exists('color', $crop_config))
+                    {
+                        $color = $crop_config['color'];
+                    }
+
+                    $cropAction = new CropImageAction($crop_config['width'], $crop_config['height'], $crop_name, $crop_config['target'], $color);
+                    $parentAction->succeedWith($cropAction);
+                    $parentAction = $cropAction;
+                }
+
             }
 
         }catch (ImageConfigException $imconfexc){

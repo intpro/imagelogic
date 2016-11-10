@@ -69,4 +69,17 @@ class Report implements ReportInterface
         $this->images[$image_name]['sizes'][$sufix] = $resized_file_name;
     }
 
+    /**
+     * @param string $image_name
+     * @param array $crop_file_name
+     *
+     * @return array
+     */
+    public function setImageCrop($image_name, $sufix, $crop_file_name)
+    {
+        $this->createImageIfNotExist($image_name);
+
+        $this->images[$image_name]['crops'][$sufix] = $crop_file_name;
+    }
+
 }

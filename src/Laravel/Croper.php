@@ -2,6 +2,7 @@
 
 namespace Interpro\ImageFileLogic\Laravel;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Interpro\ImageFileLogic\Concept\Croper as CroperInterface;
 use Interpro\ImageFileLogic\Concept\Exception\ImageFileSystemException;
