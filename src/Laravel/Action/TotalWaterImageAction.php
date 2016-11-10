@@ -23,9 +23,9 @@ class TotalWaterImageAction extends ImageAction
 
     public function applyFor(ImageItem $imageItem)
     {
-        $this->water->wather($imageItem->getConfigName());
+        $this->water->wather($imageItem->getNameWoExt());
 
-        Log::info('Добавлен водяной знак к картинке: ' . $imageItem->getConfigName());
+        Log::info('Добавлен водяной знак к картинке: ' . $imageItem->getNameWoExt());
 
         $this->next($imageItem);
     }

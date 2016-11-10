@@ -19,7 +19,7 @@ class Wather
     {
         $this->pathResolver = App::make('Interpro\ImageFileLogic\Concept\PathResolver');
 
-        $water = config('imagefilelogic.crop_water');
+        $water = config('imagefilelogic.water');
 
         $this->active = true;
 
@@ -27,7 +27,7 @@ class Wather
         {
             if(array_key_exists('path', $water))
             {
-                $this->water_path = public_path($water['path']);
+                $this->water_path = $water['path'];
             }
 
             $x=0;
@@ -65,6 +65,11 @@ class Wather
         foreach (glob($half_path.'*.*') as $file)
         {
             if(is_dir($file) || $file=='.' || $file=='..') continue;
+
+            if(strpos($file, 'icon.') or strpos($file, 'preview.'))
+            {
+                continue;
+            }
 
             $source_img = Image::make($file);
 

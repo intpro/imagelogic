@@ -52,6 +52,7 @@ class CropImageAction extends ImageAction
     public function applyFor(ImageItem $imageItem)
     {
         $images_dir = $this->pathResolver->getImageDir();
+        $crop_dir = $this->pathResolver->getImageCropDir();
 
         $image_path = $images_dir.'/'.$imageItem->getName();
 
@@ -65,19 +66,29 @@ class CropImageAction extends ImageAction
 
         $crop_name = $imageItem->getNameWoExt().'_'.$this->sufix.'.'.$imageItem->getExt();
 
-        $crop_path = $images_dir.'/'.$crop_name;
+        $crop_path = $crop_dir.'/'.$crop_name;
 
 
 
         $resizes = $this->imageConfig->getConfig($imageItem->getConfigName());
 
+        $find = false;
 
-        if(!array_key_exists($this->target, $resizes))
+        $resize_config = null;
+
+        foreach($resizes['sizes'] as $resize)
+        {
+            if($resize['sufix'] === $this->target)
+            {
+                $find = true;
+                $resize_config = $resize;
+            }
+        }
+
+        if(!$find)
         {
             throw new ImageFileSystemException('Не найден ресайз в конфигурации по имени '.$this->target.' для картинки '.$imageItem->getConfigName());
         }
-
-        $resize_config = $resizes[$this->target];
 
         $absolve = array_key_exists('absolve', $resize_config) ? $resize_config['absolve'] : false;
 
