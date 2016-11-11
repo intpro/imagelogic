@@ -55,6 +55,7 @@ class CropImageAction extends ImageAction
         $crop_dir = $this->pathResolver->getImageCropDir();
 
         $image_path = $images_dir.'/'.$imageItem->getName();
+        $mod_image_path = $images_dir.'/mod_'.$imageItem->getName();
 
         if(file_exists($image_path))
         {
@@ -69,12 +70,13 @@ class CropImageAction extends ImageAction
         $crop_path = $crop_dir.'/'.$crop_name;
 
 
-
         $resizes = $this->imageConfig->getConfig($imageItem->getConfigName());
 
         $find = false;
 
         $resize_config = null;
+
+        $mod = false;
 
         foreach($resizes['sizes'] as $resize)
         {
@@ -82,8 +84,20 @@ class CropImageAction extends ImageAction
             {
                 $find = true;
                 $resize_config = $resize;
+
+                if(array_key_exists('mod', $resize))
+                {
+                    $mod = $resize['mod'];
+                }
             }
         }
+
+
+        if($mod and file_exists($mod_image_path))
+        {
+            $source_img = Image::make($mod_image_path);
+        }
+
 
         if(!$find)
         {

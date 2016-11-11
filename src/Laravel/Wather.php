@@ -4,6 +4,7 @@ namespace Interpro\ImageFileLogic\Laravel;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
+use Interpro\ImageFileLogic\Concept\Item\ImageItem;
 use Intervention\Image\Facades\Image;
 
 class Wather
@@ -62,7 +63,7 @@ class Wather
     {
         $wather = Image::make(public_path($this->water_path));
 
-        foreach (glob($half_path.'*.*') as $file)
+        foreach (glob($half_path) as $file)
         {
             if(is_dir($file) || $file=='.' || $file=='..') continue;
 
@@ -79,21 +80,50 @@ class Wather
         }
     }
 
-    public function wather($image_prefix)
+    public function watherOriginal(ImageItem $imageItem)
     {
         if($this->active)
         {
+            $image_prefix = $imageItem->getNameWoExt();
+
+            $images_dir   = $this->pathResolver->getImageDir();
+
+            $image_path = $images_dir.'/'.$image_prefix.'.'.$imageItem->getExt();
+
+            $mod_image_path = $images_dir.'/mod_'.$image_prefix.'.'.$imageItem->getExt();
+
+            $wather = Image::make(public_path($this->water_path));
+
+            foreach (glob($image_path) as $file)
+            {
+                if(is_dir($file) || $file=='.' || $file=='..') continue;
+
+                $source_img = Image::make($file);
+
+                $source_img->insert($wather, $this->position, $this->x, $this->y);
+
+                $source_img->save($mod_image_path, 100);
+            }
+        }
+    }
+
+    public function wather(ImageItem $imageItem)
+    {
+        if($this->active)
+        {
+            $image_prefix = $imageItem->getNameWoExt();
+
             $images_dir   = $this->pathResolver->getImageDir();
 
             $image_path = $images_dir.'/'.$image_prefix;
 
-            $this->insertWater($image_path);
+            $this->insertWater($image_path.'*.*', $image_prefix);
 
             $crop_dir   = $this->pathResolver->getImageCropDir();
 
             $crop_path = $crop_dir.'/'.$image_prefix;
 
-            $this->insertWater($crop_path);
+            $this->insertWater($crop_path.'*.*', $image_prefix);
         }
     }
 }

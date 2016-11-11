@@ -130,13 +130,14 @@ class CropConfig implements CropConfigInterface
 
     public function getConfigAll()
     {
-        try
-        {
-            return config('crop');
-        }catch (\Exception $e){
+        $config = config('crop');
 
-            throw new CropConfigException('Отсутствует настройка кропов.');
+        if(!$config)
+        {
+            $config = [];
         }
+
+        return $config;
     }
 
     /**
@@ -154,7 +155,7 @@ class CropConfig implements CropConfigInterface
 
         }else{
 
-            throw new CropConfigException('Имя изображения не найдено в настройке.');
+            return [];
         }
 
         return $image_config;

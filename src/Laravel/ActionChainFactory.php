@@ -36,6 +36,8 @@ class ActionChainFactory implements ActionChainFactoryInterface
     {
         $parentAction = $headAction;
 
+        $total = false;
+
         try{
 
             $config = $this->imageConfig->getConfig($config_name);
@@ -57,6 +59,13 @@ class ActionChainFactory implements ActionChainFactoryInterface
 
             if($name == 'update' or 'refresh')
             {
+                if(!$total)
+                {
+                    $wmAction = new WaterImageAction();
+                    $parentAction->succeedWith($wmAction);
+                    $parentAction = $wmAction;
+                }
+
                 if(array_key_exists('sizes', $config))
                 {
                     foreach($config['sizes'] as $npp => $size_config)
@@ -84,9 +93,12 @@ class ActionChainFactory implements ActionChainFactoryInterface
                     $parentAction = $cropAction;
                 }
 
-                $wmAction = new TotalWaterImageAction();
-                $parentAction->succeedWith($wmAction);
-                $parentAction = $wmAction;
+                if($total)
+                {
+                    $twmAction = new TotalWaterImageAction();
+                    $parentAction->succeedWith($twmAction);
+                    $parentAction = $twmAction;
+                }
 
             }
 
