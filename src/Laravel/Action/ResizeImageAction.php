@@ -54,23 +54,18 @@ class ResizeImageAction extends ImageAction
         $image_path = $images_dir.'/'.$imageItem->getName();
         $mod_image_path = $images_dir.'/mod_'.$imageItem->getName();
 
-        if($this->mod)
+        if(file_exists($image_path))
         {
-            if(file_exists($mod_image_path))
-            {
-                $source_img = Image::make($mod_image_path);
-            }else
-            {
-                throw new ImageFileSystemException('Не найден файл картинки '.$mod_image_path);
-            }
-        }else{
-            if(file_exists($image_path))
-            {
-                $source_img = Image::make($image_path);
-            }else
-            {
-                throw new ImageFileSystemException('Не найден файл картинки '.$image_path);
-            }
+            $source_img = Image::make($image_path);
+        }
+        else
+        {
+            throw new ImageFileSystemException('Не найден файл картинки '.$image_path);
+        }
+
+        if($this->mod and file_exists($mod_image_path))
+        {
+            $source_img = Image::make($mod_image_path);
         }
 
         $resized_name = $imageItem->getNameWoExt().'_'.$this->sufix.'.'.$imageItem->getExt();

@@ -116,8 +116,8 @@ class CropImageAction extends ImageAction
         $target_width = $img->getWidth();
         $target_height = $img->getHeight();
 
-        $target_x1 = $target_width/2 - $this->width/2;
-        $target_y1 = $target_height/2 - $this->height/2;
+        $target_x1 = (int)($target_width/2 - $this->width/2);
+        $target_y1 = (int)($target_height/2 - $this->height/2);
 
         if($target_width < $this->width)
         {
